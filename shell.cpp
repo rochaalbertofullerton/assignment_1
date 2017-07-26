@@ -2,7 +2,7 @@
 
 Alberto Rocha berto323@csu.fullerton.edu
 
-Serial Downloader
+Shell
 
 files needed: NONE
 
