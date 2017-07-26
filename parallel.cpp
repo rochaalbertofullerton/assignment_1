@@ -34,7 +34,7 @@ int main() {
         if (!file){
 
                 cout << "Could not open file" << endl;
-                exit(0);
+                exit(1);
 
         }
 
