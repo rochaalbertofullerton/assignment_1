@@ -1,79 +1,227 @@
 
-/*
+/*********************
 
-Alberto Rocha berto323@csu.fullerton.edu
+ * Kristi Chang         kristi.chang@csu.fullerton.edu
 
-Parallel Downloader
+ * CPSC 351
 
-files needed: url.txt
+ * Assignment 1
 
-July 25, 2017
+ * Due Date: July 26, 11:55 PM
+
+ * File: parallel.cpp
+
+ *
+
+ *********************/
 
 
-*/
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include <stdio.h>
-#include <fstream>
+
 #include <iostream>
-#include <string>
+
+#include <unistd.h>
+
+#include <sys/types.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <sys/wait.h>
+
+#include <fstream>
+
 #include <vector>
+
 using namespace std;
 
-int main() {
 
 
-        pid_t pid;                // The child process id      
-        vector<string> list;      // list will hold the urls that will be read
+/* Read the URL files */
 
-        string temp;             // temp will be used to hold the current line that was read
-        ifstream file;           // createing the varible to read the file
-        file.open("url.txt");    // open the file
-
-        // If file does not open exit with an error
-        if (!file){
-
-                cout << "Could not open file" << endl;
-                exit(1);
-
-        }
-
-        // Reading line from the file and putting them in list
-        while( file >> temp ){
-
-                list.push_back(temp);
-        }
+vector<string> urls;
 
 
-        // Create n childern based on the number of children
-        for(int i = 0 ; i < list.size() ; i++){
 
-                pid = fork();
+/*
 
-                if( pid <  0 ){
+ * Forks children and lets them perform their tasks
 
-                        cout << " A child could not be fork()" << endl;
-                        exit(1);
+ * @param urls - the urls to download
 
-                }
+ */
 
-                else if(pid == 0){
+void create_child()
 
-                                                                                                              
-                        execlp("wget", "wget", list.at(i).c_str(), NULL);
-              }
-       }
+{	
 
-       file.close();
+	/* The process id */
 
-        // Parent waits n time for the child to exit
-       for(int i = 0 ; i < list.size() ; i++){
+	pid_t pid;
 
-                wait(NULL);
+	int count = 0; //count the created children
 
-       }
 
-       return 0;
+
+	/* Go through all the URLs */
+
+	for(vector<string>::iterator urlIt = urls.begin();
+
+		urlIt != urls.end(); ++urlIt)
+
+	{
+
+		/* Create a child */
+
+		pid = fork();
+
+		count++;
+
+		
+
+		/* Make sure the fork was a success */
+
+		if(pid < 0)
+
+		{
+
+			perror("fork: ");
+
+			exit(1);
+
+		}
+
+		/* The child code */
+
+		else if(pid == 0)
+
+		{	
+			
+
+	
+
+			execlp("wget", "wget", urlIt->c_str(),NULL);
+
+		}
+
+	}
+
+	while(count > 0)
+
+	{
+
+		wait(NULL);
+
+		count--;
+
+	}
+
+}
+
+
+
+/**
+
+ * Read URLs from the file
+
+ * @param urls - the URLs to download
+
+ */
+
+void read_urls()
+
+{
+
+	/* Open the file */
+
+	ifstream fileName("url.txt");		
+
+	
+
+	string fileLine;
+
+	
+
+	/* Make sure the file was opened */
+
+	if(fileName.is_open())
+
+	{
+
+		cout << "Successfully opened urls.txt\n\n";
+
+	}
+
+	else
+
+	{
+
+		cerr << "Failed to open urls.txt\n\n";
+
+		exit(1);
+
+	}
+
+	
+
+	/* Read the entire file */
+
+	while(!fileName.eof())
+
+	{
+
+		/* Read a line */
+
+		fileName >> fileLine;
+
+		
+
+		/* Are we at the end of the file */
+
+		if(!fileName.eof())
+
+		{
+
+			urls.push_back(fileLine);
+
+		}
+
+	}
+
+	
+
+	/* Close the file */
+
+	fileName.close();
+
+}
+
+
+
+int main()
+
+{
+
+	
+
+	/* Read the URLs */
+
+	read_urls();
+
+	
+
+	/* Create child processes */
+
+	create_child();
+
+	
+
+	wait(NULL);
+
+
+
+	return 0;
+
+	
+
 }
