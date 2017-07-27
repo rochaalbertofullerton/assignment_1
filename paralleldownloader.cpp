@@ -96,7 +96,6 @@ void create_child()
 		else if(pid == 0)
 
 		{	
-
 			fclose(stdout);
 
 			fclose(stderr);
@@ -137,7 +136,7 @@ void read_urls()
 
 	/* Open the file */
 
-	ifstream fileName("urls.txt");		
+	ifstream fileName("url.txt");		
 
 	
 
