@@ -1,3 +1,4 @@
+
 /*
 
 Alberto Rocha berto323@csu.fullerton.edu
@@ -24,13 +25,14 @@ using namespace std;
 int main() {
 
 
-        pid_t pid;
-        vector<string> list;
+        pid_t pid;                // The child process id      
+        vector<string> list;      // list will hold the urls that will be read
 
-        string temp; // temp will be used to hold the current line that was read
-        ifstream file; // createing the varible to read the file
-        file.open("url.txt"); // open the file
+        string temp;             // temp will be used to hold the current line that was read
+        ifstream file;           // createing the varible to read the file
+        file.open("url.txt");    // open the file
 
+        // If file does not open exit with an error
         if (!file){
 
                 cout << "Could not open file" << endl;
@@ -38,13 +40,14 @@ int main() {
 
         }
 
+        // Reading line from the file and putting them in list
         while( file >> temp ){
 
                 list.push_back(temp);
         }
 
 
-
+        // Create n childern based on the number of children
         for(int i = 0 ; i < list.size() ; i++){
 
                 pid = fork();
@@ -65,6 +68,7 @@ int main() {
 
        file.close();
 
+        // Parent waits n time for the child to exit
        for(int i = 0 ; i < list.size() ; i++){
 
                 wait(NULL);
