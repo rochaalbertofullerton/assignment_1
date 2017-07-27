@@ -96,9 +96,7 @@ void create_child()
 		else if(pid == 0)
 
 		{	
-			//fclose(stdout);
-
-			//fclose(stderr);
+			
 
 	
 
