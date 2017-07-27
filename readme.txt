@@ -106,7 +106,7 @@ The execution times(4 urls):
 		sys  0m0.247s
 
 		Parallel:
-		real 0m26.054s
+		real 0m26.054
 		user 0m0.278s
 		sys  0m0.256s
 
@@ -152,9 +152,13 @@ Presenting: NO
 	We will NOT be volunteering  to presenting on the 27th
 
 **************************************************************************
-Anything Speical: NO
+Anything Speical: YES
 	
-	There is nothing special our submission that needs to be noted
+	-There are two files the url.txt file which contains the 4 url links
+		this is the one that is hard code to the serial and parallel
+	-There is also urls.txt which is not hard coded into serial and parallel
+		that one has 10 links that was used for question 4
+	
 
 *************************************************************************
 Hard Times: YES
